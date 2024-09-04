@@ -20,10 +20,30 @@ end half;
 ```
 
 ## Full Adder
-> obs: o Full adder foi implementado usando Half adders, então é necessário ter o código do Half adder.
+> Full Adder sem Half Adders:
 ```VHDL
-VHDL
+library ieee;
+use ieee.std_logic_1164.all;
 
+entity full_adder is
+    port(A, B, Cin: IN std_logic;
+        S, Cout: OUT std_logic);
+end full_adder;
+
+architecture full of full_adder is
+
+signal w1,w2,w3: std_logic;
+
+begin
+    w1 <= A XOR B;
+    S <= w1 XOR Cin;
+    w2 <= w1 AND Cin;
+    w3 <= A AND B;
+    Cout <= w2 OR w3;
+end full;
+```
+> Full Adder com Half Adders:
+```VHDL
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
