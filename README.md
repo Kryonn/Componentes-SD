@@ -42,6 +42,7 @@ begin
     Cout <= w2 OR w3;
 end full;
 ```
+## Contadores
 > Full Adder com Half Adders:
 ```VHDL
 LIBRARY ieee;
