@@ -423,22 +423,20 @@ architecture behavior of counter_16bits is
             p0, p1, p2, p3, p4, p5, p6: out std_logic);
     end component;
 
-    signal counter: integer range 0 to 65535;  
+    signal counter: std_logic_vector (15 downto 0);  
     signal count: std_logic_vector (15 downto 0);
 
 begin    
     process(clk, rst)
     begin
-        if(falling_edge(clk)) then
-            if(rst = '1') then
-                counter <= 0;
-            else
-                counter <= counter + 1;
-            end if;
-        end if;
+        if(rst = '1')then
+		counter <= (others => '0');
+	elsif(rising_edge(clk)) then
+		counter <= std_logic_vector(unsigned(counter) + 1);
+	end if;
     end process;
 
-    count <= std_logic_vector(to_unsigned(counter, 16));
+    count <= counter;
 
     inst1: display
     port map(s0 => count(0),
