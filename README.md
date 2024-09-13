@@ -2,6 +2,40 @@
 
 Nesse repositório serão encontrados os módulos, em VHDL, de vários componentes lógicos.
 
+```VHDL
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity counter_16bits is
+    port(clk, rst: in std_logic;
+        d: out std_logic_vector(4 downto 0));
+end counter_16bits;
+
+architecture behavior of counter_16bits is
+
+
+    signal counter: std_logic_vector (15 downto 0) := "0000000000000000";  
+    signal count: std_logic_vector (15 downto 0) := "0000000000000000";
+
+begin    
+    process(clk, rst)
+    begin
+        if(rst = '1') then
+				counter <= "0000000000000000";
+		  elsif(rising_edge(clk)) then
+                counter <= std_logic_vector(unsigned(counter) + 1);
+        else
+                counter <= counter;
+        end if;
+    end process;
+
+    d(4 downto 0) <= counter(4 downto 0);
+    
+    
+end behavior;
+```
+
 ## Display de 7 segmentos
 ```VHDL
 LIBRARY ieee;
