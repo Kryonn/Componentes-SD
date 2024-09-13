@@ -337,7 +337,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity rotator is
-    port(clk: in std_logic;
+    port(clk, rst: in std_logic;
         d: out std_logic_vector(27 downto 0));
 end rotator;
 
@@ -349,14 +349,14 @@ architecture rot of rotator is
     end component;
 
     signal clk_1sec: std_logic := '0';
-    constant ac: integer(26 downto 0) := (50_000_000-1);
-    variable counter1: integer(26 downto 0) := 0;
-    variable counter2: integer (1 downto 0) := 0;
-    signal ini: std_logic_vector(15 downto 0) := '1101111000010000';
-    signal n1: std_logic_vector(15 downto 0) := '1110000100001101';
-    signal n2: std_logic_vector(15 downto 0) := '0001000011011110';
-    signal n3: std_logic_vector(15 downto 0) := '0000110111100001';
-    signal q: std_logic_vector(15 downto 0) := '0000000000000000';
+    constant ac: integer range 0 to 49999999 := 49999999;
+    variable counter1: integer range 0 to 49999999 := 0;
+    variable counter2: integer range 0 to 3 := 0;
+    signal ini: std_logic_vector(15 downto 0) := "1101111000010000";
+    signal n1: std_logic_vector(15 downto 0) := "1110000100001101";
+    signal n2: std_logic_vector(15 downto 0) := "0001000011011110";
+    signal n3: std_logic_vector(15 downto 0) := "0000110111100001";
+    signal q: std_logic_vector(15 downto 0) := "0000000000000000";
     
 begin
     process(clk)
@@ -365,7 +365,7 @@ begin
             if(counter1 = ac) then
                 clk_1sec <= not clk_1sec;
                 counter1 <= 0;
-            else;
+            else
                 counter1 <= counter1 + 1;
             end if;
         end if;
