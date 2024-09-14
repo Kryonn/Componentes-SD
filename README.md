@@ -403,7 +403,7 @@ begin
     
 end behavior;
 ```
-> Contador de 16 bits com display(t2):
+> Contador de 16 bits com display(t2)(TESTAR):
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -490,7 +490,7 @@ begin
 
 end behavior;
 ```
->Contador de 1 segundo:
+>Contador de 1 segundo(TESTAR):
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -523,18 +523,20 @@ begin
     
     process(clk_1sec, rst) then
     begin
-        if(falling_edge(clk_1sec)) then
-            if(rst = '1' or counter_q = '1001') then
-                counter_q <= (others => '0');
+        if(rst = '1') then
+            counter_q <= (others => '0');
+        elsif(rising_edge(clk_1sec)) then
+            if(counter_q = "1001") then
+                counter_q <= (others => 0);
             else
-                counter_q <= std_logic_vector(unsigned(counter_q)+1);
+                counter_q <= std_logic_vector(unsigned(counter_q) + 1);
             end if;
         end if;
     end process;
     q <= counter_q;
 end behavior;
 ```
-> contador de 1 segundo(com display):
+> contador de 1 segundo(com display)(TESTAR):
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -599,7 +601,7 @@ begin
 end behavior;
 ```
 ## Rotator
-> Rotator de 4 bits (primeira tentativa):
+> Rotator de 4 bits (primeira tentativa)(TESTAR)(Precisa alterar as instanciações dos displays):
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -612,8 +614,8 @@ end rotator;
 architecture rot of rotator is
 
     component display
-        port(s0, s1, s2, s3: in std_logic;
-            p0, p1, p2, p3, p4, p5, p6: out std_logic);
+        port(s: in std_logic_vector(3 downto 0);
+            p: out std_logic_vector(6 downto 0));
     end component;
 
     signal clk_1sec: std_logic := '0';
@@ -667,56 +669,56 @@ begin
     end process;
 
     inst1: display
-    port map(s0 => q(0),
-             s1 => q(1),
-             s2 => q(2),
-             s3 => q(3),
-             p0 => d(0),
-             p1 => d(1),
-             p2 => d(2),
-             p3 => d(3),
-             p4 => d(4),
-             p5 => d(5),
-             p6 => d(6));
+    port map(s(0) => q(0),
+             s(1) => q(1),
+             s(2) => q(2),
+             s(3) => q(3),
+             p(0) => d(0),
+             p(1) => d(1),
+             p(2) => d(2),
+             p(3) => d(3),
+             p(4) => d(4),
+             p(5) => d(5),
+             p(6) => d(6));
 
     inst2: display
-    port map(s0 => q(4),
-             s1 => q(5),
-             s2 => q(6),
-             s3 => q(7),
-             p0 => d(7),
-             p1 => d(8),
-             p2 => d(9),
-             p3 => d(10),
-             p4 => d(11),
-             p5 => d(12),
-             p6 => d(13));
+    port map(s(0) => q(4),
+             s(1) => q(5),
+             s(2) => q(6),
+             s(3) => q(7),
+             p(0) => d(7),
+             p(1) => d(8),
+             p(2) => d(9),
+             p(3) => d(10),
+             p(4) => d(11),
+             p(5) => d(12),
+             p(6) => d(13));
 
     inst3: display
-    port map(s0 => q(8),
-             s1 => q(9),
-             s2 => q(10),
-             s3 => q(11),
-             p0 => d(14),
-             p1 => d(15),
-             p2 => d(16),
-             p3 => d(17),
-             p4 => d(18),
-             p5 => d(19),
-             p6 => d(20));
+    port map(s(0) => q(8),
+             s(1) => q(9),
+             s(2) => q(10),
+             s(3) => q(11),
+             p(0) => d(14),
+             p(1) => d(15),
+             p(2) => d(16),
+             p(3) => d(17),
+             p(4) => d(18),
+             p(5) => d(19),
+             p(6) => d(20));
             
     inst4: display
-    port map(s0 => q(12),
-             s1 => q(13),
-             s2 => q(14),
-             s3 => q(15),
-             p0 => d(21),
-             p1 => d(22),
-             p2 => d(23),
-             p3 => d(24),
-             p4 => d(25),
-             p5 => d(26),
-             p6 => d(27));
+    port map(s(0) => q(12),
+             s(1) => q(13),
+             s(2) => q(14),
+             s(3) => q(15),
+             p(0) => d(21),
+             p(1) => d(22),
+             p(2) => d(23),
+             p(3) => d(24),
+             p(4) => d(25),
+             p(5) => d(26),
+             p(6) => d(27));
     
 end rot;
 ```
@@ -733,8 +735,8 @@ end rotator6bits;
 architecture rot of rotator6bits is
 
     component display
-        port(s0, s1, s2, s3: in std_logic;
-            p0, p1, p2, p3, p4, p5, p6: out std_logic);
+        port(s: in std_logic_vector(3 downto 0);
+            p: out std_logic_vector(6 downto 0));
     end component;
 
     constant ac: integer range 0 to 49999999 := 49999999;
