@@ -601,10 +601,11 @@ begin
 end behavior;
 ```
 ## Rotator
-> Rotator de 4 bits (primeira tentativa)(TESTAR)(Precisa alterar as instanciações dos displays):
+> Rotator de 4 bits CORRETO:
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity rotator is
     port(clk, rst: in std_logic;
@@ -614,14 +615,14 @@ end rotator;
 architecture rot of rotator is
 
     component display
-        port(s: in std_logic_vector(3 downto 0);
-            p: out std_logic_vector(6 downto 0));
+        port(s0, s1, s2, s3: in std_logic;
+            p0, p1, p2, p3, p4, p5, p6: out std_logic);
     end component;
 
     signal clk_1sec: std_logic := '0';
-    constant ac: integer range 0 to 49999999 := 49999999;
-    variable counter1: integer range 0 to 49999999 := 0;
-    variable counter2: integer range 0 to 3 := 0;
+    constant ac: integer range 0 to 25000000 := 25000000;
+    signal counter1: std_logic_vector(26 downto 0) := (others => '0');
+    signal counter2: std_logic_vector(1 downto 0):= (others => '0');
     signal ini: std_logic_vector(15 downto 0) := "1101111000010000";
     signal n1: std_logic_vector(15 downto 0) := "1110000100001101";
     signal n2: std_logic_vector(15 downto 0) := "0001000011011110";
@@ -632,11 +633,11 @@ begin
     process(clk)
     begin
         if(rising_edge(clk))then
-            if(counter1 = ac) then
+            if(unsigned(counter1) = ac) then
                 clk_1sec <= not clk_1sec;
-                counter1 <= 0;
+                counter1 <= (others => '0');
             else
-                counter1 <= counter1 + 1;
+                counter1 <= std_logic_vector(unsigned(counter1) + 1);
             end if;
         end if;
     end process;
@@ -644,12 +645,12 @@ begin
     process(clk_1sec, rst)
     begin
         if(rst = '1') then
-            counter2 <= 0;
+            counter2 <= (others => '0');
         elsif (rising_edge(clk_1sec)) then
-            if(counter2 = 3) then
-                counter2 <= 0;
+            if(counter2 = "11") then
+                counter2 <= (others => '0');
             else
-                counter2 <= counter2 + 1;
+                counter2 <= std_logic_vector(unsigned(counter2) + 1);
             end if;
         end if;
     end process;
@@ -657,68 +658,68 @@ begin
     process(counter2)
     begin
         case (counter2) is
-            when 0 =>
+            when "00" =>
                 q <= ini;
-            when 1 =>
+            when "01" =>
                 q <= n1;
-            when 2 =>
+            when "10" =>
                 q <= n2;
-            when 3 =>
+            when "11" =>
                 q <= n3;
         end case;
     end process;
 
     inst1: display
-    port map(s(0) => q(0),
-             s(1) => q(1),
-             s(2) => q(2),
-             s(3) => q(3),
-             p(0) => d(0),
-             p(1) => d(1),
-             p(2) => d(2),
-             p(3) => d(3),
-             p(4) => d(4),
-             p(5) => d(5),
-             p(6) => d(6));
+    port map(s0 => q(0),
+             s1 => q(1),
+             s2 => q(2),
+             s3 => q(3),
+             p0 => d(0),
+             p1 => d(1),
+             p2 => d(2),
+             p3 => d(3),
+             p4 => d(4),
+             p5 => d(5),
+             p6 => d(6));
 
     inst2: display
-    port map(s(0) => q(4),
-             s(1) => q(5),
-             s(2) => q(6),
-             s(3) => q(7),
-             p(0) => d(7),
-             p(1) => d(8),
-             p(2) => d(9),
-             p(3) => d(10),
-             p(4) => d(11),
-             p(5) => d(12),
-             p(6) => d(13));
+    port map(s0 => q(4),
+             s1 => q(5),
+             s2 => q(6),
+             s3 => q(7),
+             p0 => d(7),
+             p1 => d(8),
+             p2 => d(9),
+             p3 => d(10),
+             p4 => d(11),
+             p5 => d(12),
+             p6 => d(13));
 
     inst3: display
-    port map(s(0) => q(8),
-             s(1) => q(9),
-             s(2) => q(10),
-             s(3) => q(11),
-             p(0) => d(14),
-             p(1) => d(15),
-             p(2) => d(16),
-             p(3) => d(17),
-             p(4) => d(18),
-             p(5) => d(19),
-             p(6) => d(20));
+    port map(s0 => q(8),
+             s1 => q(9),
+             s2 => q(10),
+             s3 => q(11),
+             p0 => d(14),
+             p1 => d(15),
+             p2 => d(16),
+             p3 => d(17),
+             p4 => d(18),
+             p5 => d(19),
+             p6 => d(20));
             
     inst4: display
-    port map(s(0) => q(12),
-             s(1) => q(13),
-             s(2) => q(14),
-             s(3) => q(15),
-             p(0) => d(21),
-             p(1) => d(22),
-             p(2) => d(23),
-             p(3) => d(24),
-             p(4) => d(25),
-             p(5) => d(26),
-             p(6) => d(27));
+    port map(s0 => q(12),
+             s1 => q(13),
+             s2 => q(14),
+             s3 => q(15),
+             p0 => d(21),
+             p1 => d(22),
+             p2 => d(23),
+             p3 => d(24),
+             p4 => d(25),
+             p5 => d(26),
+             p6 => d(27));
     
 end rot;
 ```
