@@ -292,7 +292,7 @@ end full;
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 entity counter_16bits is
     port(clk, rst: in std_logic;
@@ -306,12 +306,10 @@ architecture behavior of counter_16bits is
 begin    
     process(clk, rst)
     begin
-        if(falling_edge(clk)) then
-            if(rst = '1') then
-                count <= (others => '0');
-            else
-                count <= count + 1;
-            end if;
+	if(rst = '1') then
+		count <= (others => '0');
+	elsif(rising_edge(clk)) then
+		count <= std_logic_vector(unsigned(count)+1);
         end if;
     end process;
     
