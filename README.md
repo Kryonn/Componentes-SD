@@ -528,6 +528,73 @@ begin
 
 end behavior;
 ```
+>Contador de 16 bits(t3):
+```VHDL
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity counter_16bits is
+    port(clk, rst, enable: in std_logic;
+        d1: out std_logic_vector(6 downto 0);
+		  d2: out std_logic_vector(6 downto 0);
+		  d3: out std_logic_vector(6 downto 0);
+		  d4: out std_logic_vector(6 downto 0));
+end counter_16bits;
+
+architecture behavior of counter_16bits is
+
+    component display
+        port(bin: in std_logic_vector(3 downto 0);
+            seg: out std_logic_vector(6 downto 0));
+    end component;
+
+    signal counter: std_logic_vector (15 downto 0) := (others => '0');
+	 signal nibble1: std_logic_vector (3 downto 0);
+	 signal nibble2: std_logic_vector (3 downto 0);
+	 signal nibble3: std_logic_vector (3 downto 0);
+	 signal nibble4: std_logic_vector (3 downto 0);
+
+begin    
+    process(clk, rst)
+    begin
+    if(rst = '1')then
+			counter <= (others => '0');
+	 elsif(rising_edge(clk)) then
+			if enable = '1' then
+				counter <= std_logic_vector(unsigned(counter) + 1);
+		end if;
+    end if;
+	 end process;
+	 
+	 nibble1 <= counter(3 downto 0);
+	 nibble2 <= counter(7 downto 4);
+	 nibble3 <= counter(11 downto 8);
+	 nibble4 <= counter(15 downto 12);
+
+    inst1: display
+    port map(bin => nibble1,
+				seg => d1);
+				
+	inst2: display
+    port map(bin => nibble2,
+				seg => d2);
+	
+	inst3: display
+    port map(bin => nibble3,
+				seg => d3);
+			
+	inst4: display
+    port map(bin => nibble4,
+				seg => d4);
+			
+			
+	
+
+    
+
+end behavior;
+```
 >Contador de 1 segundo(TESTAR):
 ```VHDL
 library ieee;
