@@ -745,8 +745,8 @@ architecture rot of rotator6bits is
     signal counter1: std_logic_vector (26 downto 0) := (others => '0');
     signal counter2: std_logic_vector (2 downto 0) := (others => '0');
     signal clk_1sec: std_logic := '0';
-    signal q: std_logic_vector(23 downto 0) := (others => 0);
-    signal d_and: std_logic_vector(41 downto 0) := (others => 0);
+    signal q: std_logic_vector(23 downto 0) := (others => '0');
+    signal d_and: std_logic_vector(41 downto 0) := (others => '0');
     signal ini: std_logic_vector(23 downto 0) := "100010001101111000010000";
     signal n1: std_logic_vector(23 downto 0) := "100011011110000100001000";
     signal n2: std_logic_vector(23 downto 0) := "110111100001000010001000";
@@ -797,6 +797,8 @@ begin
                 q <= n4;
             when "101" =>
                 q <= n5;
+				when others =>
+					 q <= n5;
         end case;
     end process;
 
