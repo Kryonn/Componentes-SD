@@ -727,6 +727,7 @@ end rot;
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity rotator6bits is
     port(rst, clk: in std_logic;
@@ -736,13 +737,13 @@ end rotator6bits;
 architecture rot of rotator6bits is
 
     component display
-        port(s: in std_logic_vector(3 downto 0);
-            p: out std_logic_vector(6 downto 0));
+        port(s0, s1, s2, s3: in std_logic;
+            p0, p1, p2, p3, p4, p5, p6: out std_logic);
     end component;
 
-    constant ac: integer range 0 to 49999999 := 49999999;
-    signal counter1: integer range 0 to 49999999 := 0;
-    signal counter2: integer range 0 to 5 := 0;
+    constant ac: integer range 0 to 25000000 := 25000000;
+    signal counter1: std_logic_vector (26 downto 0) := (others => '0');
+    signal counter2: std_logic_vector (2 downto 0) := (others => '0');
     signal clk_1sec: std_logic := '0';
     signal q: std_logic_vector(23 downto 0) := (others => 0);
     signal d_and: std_logic_vector(41 downto 0) := (others => 0);
@@ -759,11 +760,11 @@ begin
     process(clk)
     begin
         if(rising_edge(clk))then
-            if(counter1 = ac) then
+            if(unsigned(counter1) = ac) then
                 clk_1sec <= not clk_1sec;
-                counter1 <= 0;
+                counter1 <= (others => '0');
             else
-                counter1 <= counter1 + 1;
+                counter1 <= std_logic_vector(unsigned(counter1) + 1);
             end if;
         end if;
     end process;
@@ -771,12 +772,12 @@ begin
     process(clk_1sec, rst)
     begin
         if(rst = '1') then
-            counter2 <= 0;
+            counter2 <= (others => '0');
         elsif(rising_edge(clk_1sec)) then
-            if(counter2 = 5) then
-                counter2 <= 0;
+            if(counter2 = "101") then
+                counter2 <= (others => '0');
             else
-                counter2 <= counter2 + 1;
+                counter2 <= std_logic_vector(unsigned(counter2) + 1);
             end if;
         end if;
     end process;
@@ -784,17 +785,17 @@ begin
     process(counter2)
     begin
         case(counter2) is
-            when 0 =>
+            when "000" =>
                 q <= ini;
-            when 1 =>
+            when "001" =>
                 q <= n1;
-            when 2 =>
+            when "010" =>
                 q <= n2;
-            when 3 =>
+            when "011" =>
                 q <= n3;
-            when 4 =>
+            when "100" =>
                 q <= n4;
-            when 5 =>
+            when "101" =>
                 q <= n5;
         end case;
     end process;
