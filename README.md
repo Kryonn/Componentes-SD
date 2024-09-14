@@ -439,58 +439,57 @@ begin
     count <= counter;
 
     inst1: display
-    port map(s0 => count(0),
-            s1 => count(1),
-            s2 => count(2),
-            s3 => count(3),
-            p0 => d(0),
-            p1 => d(1),
-            p2 => d(2),
-            p3 => d(3),
-            p4 => d(4),
-            p5 => d(5),
-            p6 => d(6));
+    port map(s(0) => count(0),
+            s(1) => count(1),
+            s(2) => count(2),
+            s(3) => count(3),
+            p(0) => d(0),
+            p(1) => d(1),
+            p(2) => d(2),
+            p(3) => d(3),
+            p(4) => d(4),
+            p(5) => d(5),
+            p(6) => d(6));
 
     inst2: display
-    port map(s0 => count(4),
-            s1 => count(5),
-            s2 => count(6),
-            s3 => count(7),
-            p0 => d(7),
-            p1 => d(8),
-            p2 => d(9),
-            p3 => d(10),
-            p4 => d(11),
-            p5 => d(12),
-            p6 => d(13));
+    port map(s(0) => count(4),
+            s(1) => count(5),
+            s(2) => count(6),
+            s(3) => count(7),
+            p(0) => d(7),
+            p(1) => d(8),
+            p(2) => d(9),
+            p(3) => d(10),
+            p(4) => d(11),
+            p(5) => d(12),
+            p(6) => d(13));
     
     inst3: display
-    port map(s0 => count(8),
-            s1 => count(9),
-            s2 => count(10),
-            s3 => count(11),
-            p0 => d(14),
-            p1 => d(15),
-            p2 => d(16),
-            p3 => d(17),
-            p4 => d(18),
-            p5 => d(19),
-            p6 => d(20));
+    port map(s(0) => count(8),
+            s(1) => count(9),
+            s(2) => count(10),
+            s(3) => count(11),
+            p(0) => d(14),
+            p(1) => d(15),
+            p(2) => d(16),
+            p(3) => d(17),
+            p(4) => d(18),
+            p(5) => d(19),
+            p(6) => d(20));
 
     inst4: display
-    port map(s0 => count(12),
-            s1 => count(13),
-            s2 => count(14),
-            s3 => count(15),
-            p0 => d(21),
-            p1 => d(22),
-            p2 => d(23),
-            p3 => d(24),
-            p4 => d(25),
-            p5 => d(26),
-            p6 => d(27));
-    
-    
+    port map(s(0) => count(12),
+            s(1) => count(13),
+            s(2) => count(14),
+            s(3) => count(15),
+            p(0) => d(21),
+            p(1) => d(22),
+            p(2) => d(23),
+            p(3) => d(24),
+            p(4) => d(25),
+            p(5) => d(26),
+            p(6) => d(27));
+
 end behavior;
 ```
 >Contador de 1 segundo:
