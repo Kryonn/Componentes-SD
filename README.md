@@ -609,17 +609,17 @@ begin
             p6 => d(13));
     
     inst3: display
-    port map(s(0) => count(8),
-            s(1) => count(9),
-            s(2) => count(10),
-            s(3) => count(11),
-            p(0) => d(14),
-            p(1) => d(15),
-            p(2) => d(16),
-            p(3) => d(17),
-            p(4) => d(18),
-            p(5) => d(19),
-            p(6) => d(20));
+    port map(s0 => count(8),
+            s1 => count(9),
+            s2 => count(10),
+            s3 => count(11),
+            p0 => d(14),
+            p1 => d(15),
+            p2 => d(16),
+            p3 => d(17),
+            p4 => d(18),
+            p5 => d(19),
+            p6 => d(20));
 
     inst4: display
     port map(s0 => count(12),
