@@ -814,7 +814,7 @@ begin
 end behavior;
 ```
 ## Rotator
-> Rotator de 4 bits CORRETO:
+> Rotator de 4 bits:
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -833,14 +833,15 @@ architecture rot of rotator is
     end component;
 
     signal clk_1sec: std_logic := '0';
-    constant ac: integer range 0 to 25000000 := 25000000;
+    constant ac: integer range 0 to 24999999 := 24999999;
     signal counter1: std_logic_vector(26 downto 0) := (others => '0');
     signal counter2: std_logic_vector(1 downto 0):= (others => '0');
-    signal ini: std_logic_vector(15 downto 0) := "1101111000010000";
-    signal n1: std_logic_vector(15 downto 0) := "1110000100001101";
-    signal n2: std_logic_vector(15 downto 0) := "0001000011011110";
-    signal n3: std_logic_vector(15 downto 0) := "0000110111100001";
+    signal ini: std_logic_vector(15 downto 0) := "1000110111100000";
+    signal n1: std_logic_vector(15 downto 0) := "1101111000001000";
+    signal n2: std_logic_vector(15 downto 0) := "1110000010001101";
+    signal n3: std_logic_vector(15 downto 0) := "0000100011011110";
     signal q: std_logic_vector(15 downto 0) := "0000000000000000";
+	 signal nd: std_logic_vector(27 downto 0) := (others => '0');
     
 begin
     process(clk)
@@ -881,62 +882,90 @@ begin
                 q <= n3;
         end case;
     end process;
+	 
+	 process(q)
+	 begin
+		if(q(3 downto 0) = "1000") then
+			d(6 downto 0) <= not nd(6 downto 0);
+		else
+			d(6 downto 0) <= nd(6 downto 0);
+		end if;
+		
+		if(q(7 downto 4) = "1000") then
+			d(13 downto 7) <= not nd(13 downto 7);
+		else
+			d(13 downto 7) <= nd(13 downto 7);
+		end if;
+		
+		if(q(11 downto 8) = "1000") then
+			d(20 downto 14) <= not nd(20 downto 14);
+		else
+			d(20 downto 14) <= nd(20 downto 14);
+		end if;
+		
+		if(q(15 downto 12) = "1000") then
+			d(27 downto 21) <= not nd(27 downto 21);
+		else
+			d(27 downto 21) <= nd(27 downto 21);
+		end if;
+		
+	end process;
 
     inst1: display
     port map(s0 => q(0),
              s1 => q(1),
              s2 => q(2),
              s3 => q(3),
-             p0 => d(0),
-             p1 => d(1),
-             p2 => d(2),
-             p3 => d(3),
-             p4 => d(4),
-             p5 => d(5),
-             p6 => d(6));
+             p0 => nd(0),
+             p1 => nd(1),
+             p2 => nd(2),
+             p3 => nd(3),
+             p4 => nd(4),
+             p5 => nd(5),
+             p6 => nd(6));
 
     inst2: display
     port map(s0 => q(4),
              s1 => q(5),
              s2 => q(6),
              s3 => q(7),
-             p0 => d(7),
-             p1 => d(8),
-             p2 => d(9),
-             p3 => d(10),
-             p4 => d(11),
-             p5 => d(12),
-             p6 => d(13));
+             p0 => nd(7),
+             p1 => nd(8),
+             p2 => nd(9),
+             p3 => nd(10),
+             p4 => nd(11),
+             p5 => nd(12),
+             p6 => nd(13));
 
     inst3: display
     port map(s0 => q(8),
              s1 => q(9),
              s2 => q(10),
              s3 => q(11),
-             p0 => d(14),
-             p1 => d(15),
-             p2 => d(16),
-             p3 => d(17),
-             p4 => d(18),
-             p5 => d(19),
-             p6 => d(20));
+             p0 => nd(14),
+             p1 => nd(15),
+             p2 => nd(16),
+             p3 => nd(17),
+             p4 => nd(18),
+             p5 => nd(19),
+             p6 => nd(20));
             
     inst4: display
     port map(s0 => q(12),
              s1 => q(13),
              s2 => q(14),
              s3 => q(15),
-             p0 => d(21),
-             p1 => d(22),
-             p2 => d(23),
-             p3 => d(24),
-             p4 => d(25),
-             p5 => d(26),
-             p6 => d(27));
+             p0 => nd(21),
+             p1 => nd(22),
+             p2 => nd(23),
+             p3 => nd(24),
+             p4 => nd(25),
+             p5 => nd(26),
+             p6 => nd(27));
     
 end rot;
 ```
-> Rotator de 6 bits(primeira tentativa):
+> Rotator de 6 bits:
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -954,7 +983,7 @@ architecture rot of rotator6bits is
             p0, p1, p2, p3, p4, p5, p6: out std_logic);
     end component;
 
-    constant ac: integer range 0 to 25000000 := 25000000;
+    constant ac: integer range 0 to 24999999 := 24999999;
     signal counter1: std_logic_vector (26 downto 0) := (others => '0');
     signal counter2: std_logic_vector (2 downto 0) := (others => '0');
     signal clk_1sec: std_logic := '0';
@@ -1010,8 +1039,8 @@ begin
                 q <= n4;
             when "101" =>
                 q <= n5;
-				when others =>
-					 q <= n5;
+	    when others =>
+                q <= n5;
         end case;
     end process;
 
